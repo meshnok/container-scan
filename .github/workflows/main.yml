@@ -6,7 +6,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - run: docker build . -t cnrtest.azurecr.io/k8sdemo:${{ github.sha }}
+    - run: docker build  -t cnrtest.azurecr.io/k8sdemo:${{ github.sha }}
       
     - uses: Azure/container-scan@v0
       with:

@@ -12,36 +12,35 @@ on:
 
 jobs:
 
-  build:
+ build:
      
-    runs-on: ubuntu-latest
+  runs-on: ubuntu-latest
 
    steps
-     - name: Checkout code
-       uses: actions/checkout@v2
-     - name: Login
-       uses: azure/docker-login@v1
-       with:
-        login-server: cnrtest.azurecr.io
-        username: ${{ secrets.ACR_USERNAME}}
-        password: ${{ secrets.ACR_Password}}
+   
+     - name:Checkout code
+       uses:actions/checkout@v2
+     - name:Login
+       uses:azure/docker-login@v1
+                                                                                      
+     with:login-server:cnrtest.azurecr.io
+        username:${{ secrets.ACR_USERNAME}}
+        password:${{ secrets.ACR_Password}}
 
-  - run: |
-      echo "github.sha=$GITHUB_SHA
-      docker build -t cnrtest.azurecr.io/k8sdemo: ${{github.sha}} .
-
-
-    - uses: Azure/container-scan@v0
-      name: Scan image for vulnerabilities
-      id: container-scan
-      continue-on-error: true
-      with:
-        image-name: cnrtest.azurecr.io/k8sdemo: ${{github.sha}}
+            - run:|
+             echo "github.sha=$GITHUB_SHA
+             docker build -t cnrtest.azurecr.io/k8sdemo:${{github.sha}} .
 
 
-    - name: Post logs to appinsights
-      uses: Azure/publish-security-assessments@v0
-      with:
-        scan-results-path: ${{ steps.container-scan.outputs.scan-report-path }}
-        connection-string: ${{ secrets.AZ_APPINSIGHTS_CONNECTION_STRING }}
-        subscription-token: ${{ secrets.AZ_SUBSCRIPTION_TOKEN }}
+         - uses:Azure/container-scan@v0
+          name:Scan image for vulnerabilities
+          id:container-scan
+         continue-on-error:true
+        with:image-name:cnrtest.azurecr.io/k8sdemo:${{github.sha}}
+
+
+          - name:Post logs to appinsights
+           uses:Azure/publish-security-assessments@v0
+         with:scan-results-path:${{ steps.container-scan.outputs.scan-report-path }}
+          connection-string:${{ secrets.AZ_APPINSIGHTS_CONNECTION_STRING }}
+          subscription-token:${{ secrets.AZ_SUBSCRIPTION_TOKEN }}

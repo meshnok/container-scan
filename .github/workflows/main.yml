@@ -7,7 +7,7 @@ jobs:
     - uses: actions/checkout@master
 
     - run: |
-       echo "github.sha=$GITHUB_SHA
+       echo "github.sha=$GITHUB_SHA"
        docker build -t cnrtest.azurecr.io/k8sdemo:${{github.sha}} .
       
     - uses: Azure/container-scan@v0

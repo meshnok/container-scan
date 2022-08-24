@@ -6,11 +6,13 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - run: docker build  -t cnrtest.azurecr.io/k8sdemo:${{ github.sha }}
+    - run: |
+       echo "github.sha=$GITHUB_SHA
+       docker build -t cnrtest.azurecr.io/k8sdemo:${{github.sha}} .
       
     - uses: Azure/container-scan@v0
       with:
-        image-name: contoso.azurecr.io/k8sdemo:${{ github.sha }}
+        image-name: cnrtest.azurecr.io/k8sdemo:${{github.sha}}
     
     - uses: Azure/docker-login@v1
       with:
